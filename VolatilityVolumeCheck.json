@@ -1,75 +1,13 @@
-// ==========================================
-// WRITE VOLATILITY JSON TO GITHUB
-// ==========================================
-
-async function writeVolatilityJSON(data, env) {
-
-  const owner =
-    "Fluid-Trading-Systems";
-
-  const repo =
-    "fts-license-registry";
-
-  const token =
-    env.GITHUB_TOKEN;
-
-  const path =
-    "VolatilityVolumeCheck.json";
-
-  const url =
-    `https://api.github.com/repos/${owner}/${repo}/contents/${path}`;
-
-  const jsonData =
-    JSON.stringify(data, null, 2);
-
-  let sha = null;
-
-  const getRes =
-    await fetch(url, {
-      headers: {
-        Authorization:
-          `Bearer ${token}`,
-        "User-Agent":
-          "fts-api"
-      }
-    });
-
-  if (getRes.ok) {
-    const file =
-      await getRes.json();
-
-    sha = file.sha;
-  }
-
-  const encoded =
-    encodeBase64Utf8(jsonData);
-
-  const putRes =
-    await fetch(url, {
-      method: "PUT",
-      headers: {
-        Authorization:
-          `Bearer ${token}`,
-        "Content-Type":
-          "application/json",
-        "User-Agent":
-          "fts-api"
-      },
-      body: JSON.stringify({
-        message:
-          "Update Volatility Volume Check",
-        content:
-          encoded,
-        ...(sha
-          ? { sha }
-          : {})
-      })
-    });
-
-  if (!putRes.ok) {
-    throw new Error(
-      "GitHub write failed"
-    );
-  }
-
+{
+  "indicator": "Volatility Volume Check",
+  "api": "api.fluidtradingsystems.com/api/data",
+  "symbol": "",
+  "source": "",
+  "pricePercentChange": 0,
+  "atrPercentChange": 0,
+  "buyVolume": 0,
+  "sellVolume": 0,
+  "bullishSignal": 0,
+  "bearishSignal": 0,
+  "timestamp": 0
 }
